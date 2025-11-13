@@ -80,3 +80,74 @@ Home Section
 
 Aquí pondremos los scripts más adelante, como animaciones o interacciones. Por ahora lo dejamos vacío.
 
+## 📍 Próximo paso: animación fade-in en Home
+
+### Objetivo:
+
+Que cuando abramos la página, los elementos de la sección Home (titulo, texto, botón) aparezcan suavemente con una animación de desvanecimiento y desplazamiento hacia arriba, usando JS + Tailwind.
+
+### Esto nos sirve para:
+
+- Aprender a manipular clases en JS
+
+- Aprender animaciones básicas con Tailwind
+
+- Que el portfolio ya tenga un “look profesional” desde el inicio
+
+### 1️⃣ Ajustar el HTML
+
+Vamos a añadir clases para ocultar inicialmente los elementos, para luego mostrarlos con animación desde JS.
+
+En el index.html, dentro de la sección Home:
+
+```bash
+<section id="home" class="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-blue-200 to-purple-300">
+    <h1 id="home-title" class="text-5xl font-bold mb-4 opacity-0 translate-y-6">Hola, soy Ana Zubieta</h1>
+    <p id="home-text" class="text-xl opacity-0 translate-y-6">Desarrolladora en formación en 42 Málaga | Ciencia de Datos & Proyectos en C</p>
+    <button id="home-button" class="mt-6 px-6 py-3 bg-blue-500 text-white rounded opacity-0 translate-y-6 hover:bg-blue-600 transition">Ver mis proyectos</button>
+</section>
+```
+- opacity-0 → hace que el elemento sea invisible al inicio
+
+- translate-y-6 → lo desplaza un poco hacia abajo (Tailwind clase utilitaria)
+
+- IDs (home-title, home-text, home-button) → nos permiten seleccionarlos desde JS
+
+### 2️⃣ Código JS para animación
+
+En el js/main.js, agrega lo siguiente:
+
+```bash
+// Animación fade-in para la sección Home
+window.addEventListener('DOMContentLoaded', () => {
+    const elements = [
+        document.getElementById('home-title'),
+        document.getElementById('home-text'),
+        document.getElementById('home-button')
+    ];
+
+    elements.forEach((el, index) => {
+        // Agregamos un retraso progresivo para cada elemento
+        setTimeout(() => {
+            el.classList.remove('opacity-0', 'translate-y-6');
+            el.classList.add('opacity-100', 'translate-y-0', 'transition', 'duration-700', 'ease-out');
+        }, index * 300); // 0ms, 300ms, 600ms...
+    });
+});
+```
+
+- Espera a que el DOM esté completamente cargado antes de ejecutar la animación.
+
+- Seleccionamos los elementos de Home que queremos animar.
+
+- Iteramos sobre cada elemento para animarlos uno a uno.
+
+- Creamos un delay progresivo para que aparezcan de forma secuencial: el primero al instante, el segundo después de 300ms, el tercero 600ms…
+
+- Quitamos las clases que ocultaban y desplazaban el elemento
+
+- Añadimos clases Tailwind para que aparezca suavemente (opacity-100 + translate-y-0)
+
+- transition duration-700 ease-out → duración 0.7s, efecto de easing suave
+
+Con esto, cuando abramos el index.html, veremos cómo el título, texto y botón aparecen con un fade-in progresivo.
