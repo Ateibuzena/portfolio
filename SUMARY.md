@@ -1,4 +1,18 @@
-# 1️⃣ Crear carpetas y archivos
+# Paso 1: Base HTML + Tailwind CSS
+
+- Configurar Tailwind con PostCSS o CDN.
+
+- Crear index.html con tu presentación.
+
+- Crear una navbar básica con links a cada sección.
+
+- Footer con contacto básico.
+
+Mini reto: que el Home tenga una animación ligera (fade-in) al cargar.
+
+---
+
+## Crear carpetas y archivos
 
 - index.html: la página principal (Home / Intro).
 
@@ -8,11 +22,11 @@
 
 - assets/: tus imágenes, iconos, logos, etc.
 
-# 2️⃣ Configurar Tailwind CSS
+## Configurar Tailwind CSS
 
 Para hacerlo rápido, vamos a usar CDN por ahora, asípuedes empezar a aprender sin configurar NodePostCSS todavía.
 
-## En index.html:
+En index.html:
 
 ### Head
 
@@ -80,7 +94,7 @@ Home Section
 
 Aquí pondremos los scripts más adelante, como animaciones o interacciones. Por ahora lo dejamos vacío.
 
-## 📍 Próximo paso: animación fade-in en Home
+## Animación fade-in en Home
 
 ### Objetivo:
 
@@ -94,7 +108,7 @@ Que cuando abramos la página, los elementos de la sección Home (titulo, texto,
 
 - Que el portfolio ya tenga un “look profesional” desde el inicio
 
-### 1️⃣ Ajustar el HTML
+### Ajustar el HTML
 
 Vamos a añadir clases para ocultar inicialmente los elementos, para luego mostrarlos con animación desde JS.
 
@@ -113,7 +127,7 @@ En el index.html, dentro de la sección Home:
 
 - IDs (home-title, home-text, home-button) → nos permiten seleccionarlos desde JS
 
-### 2️⃣ Código JS para animación
+### Código JS para animación
 
 En el js/main.js, agrega lo siguiente:
 
@@ -151,3 +165,48 @@ window.addEventListener('DOMContentLoaded', () => {
 - transition duration-700 ease-out → duración 0.7s, efecto de easing suave
 
 Con esto, cuando abramos el index.html, veremos cómo el título, texto y botón aparecen con un fade-in progresivo.
+
+## Añadimos el footer al HTML
+
+Abre tu index.html y añádelo justo antes de la etiqueta </body>:
+
+```bash
+    <!-- Footer -->
+    <footer class="bg-white shadow-inner py-6 mt-12 text-center">
+        <p class="text-gray-600 mb-2">© 2025 Ana Zubieta. Todos los derechos reservados.</p>
+        <div class="flex justify-center space-x-6">
+            <a href="mailto:ana.zubieta@example.com" class="text-blue-500 hover:text-blue-700 transition">Email</a>
+            <a href="https://github.com/anazubieta" target="_blank" class="text-blue-500 hover:text-blue-700 transition">GitHub</a>
+            <a href="https://www.linkedin.com/in/anazubieta" target="_blank" class="text-blue-500 hover:text-blue-700 transition">LinkedIn</a>
+        </div>
+    </footer>
+```
+
+- bg-white: fondo blanco
+
+- shadow-inner: sombra hacia adentro para dar relieve
+
+- py-6: padding vertical
+
+- mt-12: separación del contenido superior
+
+- text-center: centra el texto horizontalmente
+
+- Texto gris suave, con un pequeño margen inferior para separar de los enlaces.
+
+- Año actual (puedes automatizarlo luego con JS si quieres).
+
+- flex justify-center: alinea los enlaces en fila centrada.
+
+- space-x-6: añade espacio entre ellos.
+
+- text-blue-500 hover:text-blue-700 transition: color base azul, que se oscurece suavemente al pasar el cursor.
+
+- target="_blank": abre los enlaces externos en una nueva pestaña.
+
+## Resultado final del paso 1
+
+✅ Estructura base creada
+✅ Tailwind funcionando (via CDN)
+✅ Navbar + Home con animación fade-in
+✅ Footer con datos de contacto
