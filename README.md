@@ -117,3 +117,4 @@ Mini reto: un pequeño proyecto React embebido para mostrar mis progresos.
 - DB ligera: SQLite o MongoDB si quiero experimentar.
 
 Mini reto: endpoint que devuelva mis proyectos y los consuma projects.js para actualizar la UI automáticamente.
+

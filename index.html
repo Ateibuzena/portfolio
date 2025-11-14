@@ -5,10 +5,34 @@
         <meta name="viewport" content="width=device-width", initial-scale="1.0">
         <title>Portfolio Ana Zubieta</title>
         <!--Tailwind CDN-->
-        <script> src="https:://cdn.tailwindcss.com" </script>
+        <script src="https://cdn.tailwindcss.com"></script>
         <!--CSS personalizado-->
         <link rel="stylesheet" href="css/styles.css">
     </head>
+    <body class="bg-grey-100 text-grey-900">
+        <!-- Navbar corregida -->
+        <nav class="bg-white shadow p-4 flex justify-between items-center">
+            <div class="font-bold text-xl"><a href="index.html">Ana Zubieta</a></div>
+            <ul class="flex space-x-4">
+                <li><a href="index.html#home" class="hover:text-blue-500">Home</a></li>
+                <li><a href="projects.html" class="hover:text-blue-500">Projects</a></li>
+                <li><a href="skills.html" class="hover:text-blue-500">Contact</a></li>
+                <li><a href="extras.html" class="hover:text-blue-500">Extras</a></li>
+            </ul>
+        </nav>
+
+
+        <!--Home Section-->
+        <section id="home" class="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-blue-200 to-purple-300 px-10 text-center">
+            <h1 id="home-title" class="text-5xl font-bold mb-4 opacity-0 translate-y-6">Hello, I'm Ana Zubieta</h1>
+            <p id="home-text" class="text-xl opacity-0 translate-y-6">I love solving complex problems with Python, C, and modern tools in data science & AI.
+                I build scalable solutions, insightful analyses, and interactive data visualizations.
+            </p>
+            <button id="home-button" class="mt-6 px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition"><a href="projects.html">See my projects</a></button>
+        </section>
+
+        <script src="js/main.js"></script>
+    </body>
     <!--Footer-->
     <footer class="bg-white shadow-inner py-6 mt-12 text-center">
         <p class="flex-gray-600 mb-2">© 2025 Ana Zubieta. Todos los derechos reservados.</p>
@@ -18,27 +42,4 @@
             <a href="https://www.linkedin.com/in/ana-zubieta" target="_blank" class="text-blue-500 hover:text-blue-700 transition">LinkedIn</a>
         </div>
     </footer>
-    <body class="bg-grey-100 text-grey-900">
-        <!--Navbar-->
-        <nav class="bg-white shadow p-4 flex justify-between items-center">
-            <div class="font-bold text-xl">Ana Zubieta</div>
-            <ul class="flex-space-x-4">
-                <li><a href="#home" class=hover:text-blue-500">Home</a></li>
-                <li><a href="#projects" class=hover:text-blue-500">Projects</a></li>
-                <li><a href="#skills" class=hover:text-blue-500">Contact</a></li>
-                <li><a href="#extras" class=hover:text-blue-500">Extras</a></li>
-            </ul>
-        </nav>
-
-        <!--Home Section-->
-        <section id="home" class="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-blue-200 to-purple-300" >
-            <h1 id="home-title" class="text-5xl font-bold mb-4 opacity-0 translate-y-6">Hello, I'm Ana Zubieta</h1>
-            <p id="home-text" class="text-xl opacity-0 translate-y-6">I love solving complex problems with Python, C, and modern tools in data science & AI.
-                I build scalable solutions, insightful analyses, and interactive data visualizations.
-            </p>
-            <button id="home-button" class="mt-6 px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition">See my projects</button>
-        </section>
-
-        <script src=""js/main.js></script>
-    </body>
 </html>

@@ -210,3 +210,26 @@ Abre tu index.html y añádelo justo antes de la etiqueta </body>:
 ✅ Tailwind funcionando (via CDN)
 ✅ Navbar + Home con animación fade-in
 ✅ Footer con datos de contacto
+
+# Paso 2: Proyectos
+
+- Crear projects.html y tarjetas para cada proyecto.
+
+- Tarjetas con: nombre, descripción, tecnologías, link a GitHub.
+
+- Consumir la API de GitHub para mostrar repositorios directamente (esto entra en JS puro)
+
+Mini reto: que al hacer hover sobre la tarjeta, se muestre un mini resumen más largo o animación.
+
+## Crear el archivo y actualizar estructura
+
+```bash
+portfolio/
+├─ projects.html
+├─ js/
+│   └─ projects.js
+```
+
+- projects.html: será la página que muestre tus proyectos.
+
+- js/projects.js: contendrá el script que generará las tarjetas y luego conectará con la API de GitHub.
