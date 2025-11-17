@@ -1,1 +1,21 @@
 /* Aquí pondremos CSS extra si Tailwind no cubre algo */
+#skills-container h2,
+#skills-container h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+#skills-container p {
+    margin-bottom: 1rem;
+}
+
+#skills-container table {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+#skills-container details {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
