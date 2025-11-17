@@ -35,11 +35,15 @@ function setAttributesFilter(language)
     }
     else
     {
+        if (activeButtons.includes("All"))
+        {
+            activeButtons = [];
+        }
         if (activeButtons.includes(language))
         {
             activeButtons = activeButtons.filter(item => item !== language);
         }
-        else
+        else if (!activeButtons.includes("All"))
         {
             activeButtons.push(language);
         }
@@ -67,6 +71,7 @@ function filterCard()
     cards.forEach(card =>
     {
         const cardLanguage = card.getAttribute('data-language');
+        
         if (activeButtons.length === 0 || activeButtons.includes("All") || activeButtons.includes(cardLanguage))
         {
             card.style.display = 'block';
@@ -189,6 +194,7 @@ async function loadGithubProjects(params)
         // Filtrar proyectos si es necesario (por ejemplo, excluir forks)
         const filteredProjects = projects.filter(project => !project.fork);
 
+        console.log("Filtered Projects:", filteredProjects);
         renderGithubCards(filteredProjects);
     }
     catch (error)
@@ -207,6 +213,7 @@ async function loadGithubProjects(params)
             container.style.opacity = 1;
         }, 100); // Pequeño retraso para asegurar la transición suave
     }
+    console.log("GitHub projects loaded.");
 }
 
 // Cargar los proyectos al cargar la página
