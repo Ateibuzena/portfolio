@@ -118,6 +118,22 @@ function createFilters(projects)
     }); 
 }
 
+// --- SCROLL REVEAL ANIMATION --- //
+const observer = new IntersectionObserver((entries) =>
+{
+    entries.forEach(entry =>
+    {
+        if (entry.isIntersecting)
+        {
+            entry.target.classList.add('opacity-100', 'translate-y-0');
+            observer.unobserve(entry.target); // Dejar de observar una vez animado
+        }
+    });
+},
+{
+    threshold: 1.0, // Ajusta este valor según cuándo quieras que se active la animación
+});
+
 // --- RENDER FUNCTION --- //
 function renderGithubCards(projects)
 {
@@ -163,10 +179,13 @@ function renderGithubCards(projects)
         container.appendChild(card);
 
         // Animación de entrada
-        setTimeout(() =>
+
+        /*setTimeout(() =>
         {
             card.classList.add("opacity-100", "translate-y-0");
-        }, 500);
+        }, 500);*/
+
+        observer.observe(card);
             
     });
 }
