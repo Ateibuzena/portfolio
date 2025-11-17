@@ -3,26 +3,35 @@ const GITHUB_USERNAME = 'Ateibuzena';
 
 let activeButtons = [];
 
+let allRepos = [];
+let filteredRepos = [];
+
+let currentPage = 1;
+const reposPerPage = 6;
+
 // --- SET ATTRIBUTES FILTER FUNCTION --- //
 function setAttributesFilter(language)
 {   
+    // Obtener todos los botones de filtro
     const buttons = document.querySelectorAll('#filters button');
     
-    if (language === "All")
+    // Lógica de selección de botones
+    if (language === "All") // Si se selecciona "All"
     {
+        // Si "All" está activo, desactivarlo; si no, activarlo y desactivar los demás
         buttons.forEach(button =>
         {   
             button.classList.remove('bg-blue-600', 'text-white', 'border-transparent');
             if (button.textContent === "All")
             {
-                if (activeButtons.includes("All"))
+                if (activeButtons.includes("All")) // Si ya está activo, desactivarlo
                 {
                     activeButtons = [];
                     console.log(activeButtons);
                     return ;
 
                 }
-                else
+                else // Activar "All" y desactivar los demás
                 {   
                     activeButtons = [];
                     activeButtons.push(button.textContent);
@@ -33,25 +42,29 @@ function setAttributesFilter(language)
             }
         });
     }
-    else
+    else // Si se selecciona un lenguaje específico
     {
+        // Si "All" está activo, desactivarlo
         if (activeButtons.includes("All"))
         {
             activeButtons = [];
         }
-        if (activeButtons.includes(language))
+        // Alternar el estado del botón seleccionado
+        if (activeButtons.includes(language)) // Si ya está activo, desactivarlo
         {
             activeButtons = activeButtons.filter(item => item !== language);
         }
-        else if (!activeButtons.includes("All"))
+        else if (!activeButtons.includes("All")) // Evitar agregar si "All" está activo
         {
             activeButtons.push(language);
         }
     }
     console.log(activeButtons);
 
+    // Actualizar estilos de los botones
     buttons.forEach(button =>
     {
+        // Aplicar estilos según el estado activo
         if (activeButtons.includes(button.textContent))
         {
             button.classList.add('bg-blue-600', 'text-white', 'border-transparent');
@@ -66,26 +79,39 @@ function setAttributesFilter(language)
 // --- FILTER CARD FUNCTION --- //
 function filterCard()
 {
+    if (activeButtons.length === 0 || activeButtons.includes("All")) {
+        filteredRepos = [...allRepos];
+    } else {
+        filteredRepos = allRepos.filter(repo =>
+            activeButtons.includes(repo.language)
+        );
+    }
+
+    currentPage = 1;  // Reset a página 1 cuando cambias filtro
+    renderPaginatedCards();
+    /*// Obtener todas las tarjetas de proyecto
     const cards = document.querySelectorAll('#projects-container > div');
 
+    // Mostrar u ocultar tarjetas según los filtros activos
     cards.forEach(card =>
     {
         const cardLanguage = card.getAttribute('data-language');
         
-        if (activeButtons.length === 0 || activeButtons.includes("All") || activeButtons.includes(cardLanguage))
+        if (activeButtons.length === 0 || activeButtons.includes("All") || activeButtons.includes(cardLanguage)) // Mostrar todas si no hay filtros o si "All" está activo
         {
             card.style.display = 'block';
         }
-        else
+        else // Ocultar si no coincide con los filtros activos
         {
             card.style.display = 'none';
         }
-    });
+    });*/
 }
 
 // --- CREATE FILTERS FUNCTION --- //
 function createFilters(projects)
 {
+    // Obtener contenedor de filtros
     const filtersContainer = document.getElementById('filters');
     filtersContainer.innerHTML = ""; // Limpiar filtros previos
 
@@ -93,7 +119,7 @@ function createFilters(projects)
     const languages = ["All"];
     projects.forEach(project =>
     {
-        if (project.language && !languages.includes(project.language))
+        if (project.language && !languages.includes(project.language)) // Evitar duplicados
         {
             languages.push(project.language);
         }
@@ -102,18 +128,24 @@ function createFilters(projects)
     // Crear botones de filtro
     languages.forEach(language =>
     {
+        // Crear botón
         const button = document.createElement('button');
+        
+        // Configurar botón
         button.textContent = language;
 
         button.className =
             "px-4 py-1 rounded-full border border-gray-400 text-gray-700 hover:bg-gray-200 transition";
     
+        // Añadir evento de clic
         button.addEventListener('click', () =>
         {
+            // Actualizar filtros activos y filtrar tarjetas
             setAttributesFilter(language);
             filterCard();
         });
 
+        // Añadir botón al contenedor
         filtersContainer.appendChild(button);
     }); 
 }
@@ -121,11 +153,12 @@ function createFilters(projects)
 // --- SCROLL REVEAL ANIMATION --- //
 const observer = new IntersectionObserver((entries) =>
 {
+    // Animar las tarjetas cuando entren en el viewport
     entries.forEach(entry =>
     {
-        if (entry.isIntersecting)
+        if (entry.isIntersecting) // Si la tarjeta está en el viewport
         {
-            entry.target.classList.add('opacity-100', 'translate-y-0');
+            entry.target.classList.add('opacity-100', 'translate-y-0'); // Añadir clases para animar
             observer.unobserve(entry.target); // Dejar de observar una vez animado
         }
     });
@@ -134,14 +167,62 @@ const observer = new IntersectionObserver((entries) =>
     threshold: 1.0, // Ajusta este valor según cuándo quieras que se active la animación
 });
 
+async function openProjectModal(project)
+{
+    // Obtener modal
+    const modal = document.getElementById('project-modal');
+    
+    // Rellenar contenido del modal
+    document.getElementById('modal-title').textContent = project.name;
+    document.getElementById('modal-description').textContent = project.description || 'No description provided.';
+    document.getElementById('modal-language').textContent = project.language || 'N/A';
+    document.getElementById('modal-stars').textContent = project.stargazers_count;
+    document.getElementById('modal-link').href = project.html_url;
+
+    // Obtener Readme
+    const readmeResponse = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${project.name}/readme`);
+    if (readmeResponse.ok)
+    {
+        const readmeData = await readmeResponse.json();
+        const decodedContent = atob(readmeData.content);
+
+        document.getElementById('modal-readme').innerHTML = marked.parse(decodedContent);
+
+        // Resaltar código después de insertar el contenido
+        document.querySelectorAll("#modal-readme pre code").forEach(block => {
+            hljs.highlightElement(block);
+        });
+    }
+    else
+    {
+        document.getElementById('modal-readme').textContent = 'No README available.';
+    }
+    // Mostrar modal
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    // Añadir evento de cierre
+    document.getElementById('close-modal').addEventListener('click', () =>
+    {
+        const modal = document.getElementById('project-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    });
+
+    document.getElementById('project-modal').addEventListener('click', (e) =>
+    {
+        if (e.target.id === 'project-modal')
+        {
+            document.getElementById('project-modal').classList.add('hidden');
+        }
+    });
+}
+
 // --- RENDER FUNCTION --- //
 function renderGithubCards(projects)
 {
     const container = document.getElementById('projects-container');
     container.innerHTML = ""; // Limpiar contenido previo
-
-    // Crear filtros dinámicos
-    createFilters(projects);
 
     projects.forEach(project =>
     {
@@ -178,6 +259,8 @@ function renderGithubCards(projects)
 
         container.appendChild(card);
 
+        
+
         // Animación de entrada
 
         /*setTimeout(() =>
@@ -186,8 +269,55 @@ function renderGithubCards(projects)
         }, 500);*/
 
         observer.observe(card);
+
+        // Agregar eventos a las tarjetas
+        card.addEventListener('click', () =>
+        {
+            openProjectModal(project);
+        });
             
     });
+}
+
+function renderPaginationButtons()
+{
+    const totalPages = Math.ceil(filteredRepos.length / reposPerPage);
+
+    const paginationContainer = document.getElementById('pagination');
+    paginationContainer.innerHTML = ""; // Limpiar botones previos
+
+    for (let i = 1; i <= totalPages; i++)
+    {
+        const button = document.createElement('button');
+        button.textContent = i;
+
+        button.className = `px-3 py-1 rounded border ${
+            i === currentPage
+                ? "bg-blue-600 text-white"
+                : "bg-white text-gray-700 border-gray-400"
+        }`;
+
+        button.addEventListener('click', () =>
+        {
+            currentPage = i;
+            renderPaginatedCards();
+        });
+
+        paginationContainer.appendChild(button);
+    }
+}
+
+function renderPaginatedCards()
+{
+    const startIndex = (currentPage - 1) * reposPerPage;
+    const endIndex = startIndex + reposPerPage;
+
+    const totalPages = Math.ceil(filteredRepos.length / reposPerPage);
+
+    const reposToShow = filteredRepos.slice(startIndex, endIndex);
+
+    renderGithubCards(reposToShow);
+    renderPaginationButtons();
 }
 
 // --- LOAD GITHUB PROJECTS FUNCTION --- //
@@ -213,8 +343,12 @@ async function loadGithubProjects(params)
         // Filtrar proyectos si es necesario (por ejemplo, excluir forks)
         const filteredProjects = projects.filter(project => !project.fork);
 
-        console.log("Filtered Projects:", filteredProjects);
-        renderGithubCards(filteredProjects);
+        allRepos = filteredProjects;
+        filteredRepos = [...allRepos];  // al inicio no hay filtros
+
+        createFilters(allRepos);        // generar filtros SOLO una vez
+        renderPaginatedCards();
+
     }
     catch (error)
     {
