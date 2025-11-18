@@ -79,9 +79,12 @@ function setAttributesFilter(language)
 // --- FILTER CARD FUNCTION --- //
 function filterCard()
 {
-    if (activeButtons.length === 0 || activeButtons.includes("All")) {
+    if (activeButtons.length === 0 || activeButtons.includes("All"))
+    {
         filteredRepos = [...allRepos];
-    } else {
+    }
+    else
+    {
         filteredRepos = allRepos.filter(repo =>
             activeButtons.includes(repo.language)
         );
